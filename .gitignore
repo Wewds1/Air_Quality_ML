@@ -2,3 +2,5 @@ venv/
 scratch.md
 
 README.md
+.venv/
+data/
