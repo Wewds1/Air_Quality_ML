@@ -1,0 +1,7 @@
+metric,value
+rate_alert_respiratory_risk,0.28151176705225367
+rate_alert_cardiovascular_risk,0.17750299162345431
+rate_alert_vulnerable_alert,0.7369365775827682
+rate_alert_outdoor_warning,0.30953330674112484
+rate_alert_industrial_event,0.3473274830474671
+avg_total_alerts,1.8528121260470682

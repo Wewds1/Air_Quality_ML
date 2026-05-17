@@ -1,0 +1,31 @@
+{
+  "selected_model": "baseline_rf",
+  "baseline_metrics": {
+    "hamming_loss": 0.0361914257228315,
+    "f1_micro": 0.9497716894977168,
+    "f1_macro": 0.939630288427242,
+    "exact_match": 0.8334995014955134,
+    "jaccard_samples": 0.7359006314390163
+  },
+  "chain_metrics": {
+    "hamming_loss": 0.07258225324027916,
+    "f1_micro": 0.8999725199230558,
+    "f1_macro": 0.8871033647020615,
+    "exact_match": 0.6929212362911267,
+    "jaccard_samples": 0.6493187105350615
+  },
+  "selected_metrics": {
+    "hamming_loss": 0.0361914257228315,
+    "f1_micro": 0.9497716894977168,
+    "f1_macro": 0.939630288427242,
+    "exact_match": 0.8334995014955134,
+    "jaccard_samples": 0.7359006314390163
+  },
+  "label_order": [
+    "label_respiratory_risk",
+    "label_cardiovascular_risk",
+    "label_vulnerable_alert",
+    "label_outdoor_warning",
+    "label_industrial_event"
+  ]
+}

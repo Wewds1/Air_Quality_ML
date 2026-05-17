@@ -1,0 +1,7 @@
+{
+  "label_respiratory_risk": 0.5,
+  "label_cardiovascular_risk": 0.5,
+  "label_vulnerable_alert": 0.5,
+  "label_outdoor_warning": 0.5,
+  "label_industrial_event": 0.5
+}
