@@ -1,7 +1,11 @@
 from pathlib import Path
 import pandas as pd
 
-OUTPUTS_DIR = Path("../outputs")
+
+BASE_DIR = Path(__file__).resolve().parents[1]
+
+OUTPUTS_DIR = BASE_DIR / "outputs"
+OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
 latest_path = OUTPUTS_DIR / "batch_predictions.csv"
 
 if latest_path.exists():

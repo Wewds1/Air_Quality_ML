@@ -1,9 +1,11 @@
 from pathlib import Path
 import pandas as pd
 
-DATA_PATH = Path("../data/raw/air_quality_readings.csv")
+BASE_DIR = Path(__file__).resolve().parents[1]
+DATA_PATH = BASE_DIR / "data" / "raw" / "air_quality_readings.csv"
 
 df = pd.read_csv(DATA_PATH)
+
 df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
 
 print("Rows:", len(df))
