@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+from src.config import WHO_GUIDELINES
+
 
 def add_circular_features(df: pd.DataFrame) -> pd.DataFrame:
     featured = df.copy()
@@ -58,6 +60,22 @@ def add_weather_station_features(df: pd.DataFrame) -> pd.DataFrame:
     return featured
 
 
+def add_risk_context_features(df: pd.DataFrame) -> pd.DataFrame:
+    featured = df.copy()
+
+    featured["pm25_cardio_zone"] = (featured["pm25"] > 55.4).astype(int)
+    featured["multi_label_event"] = (featured["aqi"] > 150).astype(int)
+    featured["pollutants_above_who"] = (
+        (featured["pm25"] > WHO_GUIDELINES["pm25"]).astype(int)
+        + (featured["pm10"] > WHO_GUIDELINES["pm10"]).astype(int)
+        + (featured["no2"] > WHO_GUIDELINES["no2"]).astype(int)
+        + (featured["o3"] > WHO_GUIDELINES["o3"]).astype(int)
+        + (featured["so2"] > WHO_GUIDELINES["so2"]).astype(int)
+    ).clip(0, 5)
+
+    return featured
+
+
 def add_rolling_features(df: pd.DataFrame) -> pd.DataFrame:
     rolling_df = df.sort_values(["station_id", "timestamp"]).copy()
 
@@ -78,5 +96,7 @@ def build_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
     featured = add_circular_features(df)
     featured = add_composite_features(featured)
     featured = add_weather_station_features(featured)
+    featured = add_risk_context_features(featured)
     featured = add_rolling_features(featured)
-    return featured
+    drop_columns = [column for column in ["wind_dir_deg", "hour", "month"] if column in featured.columns]
+    return featured.drop(columns=drop_columns)

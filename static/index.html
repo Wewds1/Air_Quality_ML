@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Air Quality Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="brand-block">
+        <span class="brand-kicker">Urban Monitoring Grid</span>
+        <a class="brand-mark" href="/">Air Quality Command Center</a>
+      </div>
+      <div class="header-actions">
+        <a class="ghost-link" href="/api/docs" target="_blank" rel="noreferrer">API Docs</a>
+        <div class="live-pill" id="live-pill">Connecting live feed</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <p class="section-kicker">Live Risk Surface</p>
+          <h1>Air risk, exposed as a command layer instead of another dashboard template.</h1>
+          <p class="hero-text">
+            This view pulls the latest scored batch, tracks station pressure, and watches model drift in real time.
+            The interface favors contrast, spacing, and motion over generic analytics chrome.
+          </p>
+        </div>
+
+        <div class="hero-metrics">
+          <article class="metric-slab accent">
+            <span class="metric-label">Rows Scored</span>
+            <strong class="metric-value" id="rows-scored">0</strong>
+            <span class="metric-foot" id="latest-score-foot">Waiting for data</span>
+          </article>
+          <article class="metric-slab">
+            <span class="metric-label">Avg AQI</span>
+            <strong class="metric-value" id="avg-aqi">0</strong>
+            <span class="metric-foot">Live atmospheric pressure index</span>
+          </article>
+          <article class="metric-slab">
+            <span class="metric-label">Max Risk</span>
+            <strong class="metric-value" id="max-risk">0%</strong>
+            <span class="metric-foot">Highest active probability</span>
+          </article>
+          <article class="metric-slab">
+            <span class="metric-label">Active Alerts</span>
+            <strong class="metric-value" id="active-alerts">0</strong>
+            <span class="metric-foot">Rows above threshold</span>
+          </article>
+        </div>
+
+        <div class="hero-runway">
+          <div class="runway-item">
+            <span class="runway-label">Latest Sensor Timestamp</span>
+            <strong id="latest-timestamp">-</strong>
+          </div>
+          <div class="runway-item">
+            <span class="runway-label">Latest Scored At</span>
+            <strong id="latest-scored-at">-</strong>
+          </div>
+          <div class="runway-item">
+            <span class="runway-label">Stations Seen</span>
+            <strong id="stations-seen">0</strong>
+          </div>
+          <div class="runway-item">
+            <span class="runway-label">Avg Alerts / Row</span>
+            <strong id="avg-alerts">0</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="editorial-panel light-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker dark">Trajectory</p>
+            <h2>Recent pressure curve</h2>
+          </div>
+          <p class="panel-note">Average AQI, alert density, and peak probability over the most recent scoring window.</p>
+        </div>
+        <div class="timeline-shell" id="timeline-shell"></div>
+        <div class="label-grid" id="label-grid"></div>
+      </section>
+
+      <section class="editorial-panel dark-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker">Station Watch</p>
+            <h2>Stations under load</h2>
+          </div>
+          <p class="panel-note">The latest reading per station, ranked by risk pressure and flagged data quality noise.</p>
+        </div>
+        <div class="station-grid" id="station-grid"></div>
+      </section>
+
+      <section class="split-panel">
+        <div class="split-column light-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker dark">Alert Rail</p>
+              <h2>Immediate escalations</h2>
+            </div>
+            <p class="panel-note">High-probability alerts sorted for operators first, not for presentation polish.</p>
+          </div>
+          <div class="alerts-rail" id="alerts-rail"></div>
+        </div>
+
+        <div class="split-column dark-panel diagnostics-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Model & Monitoring</p>
+              <h2>Signal integrity</h2>
+            </div>
+            <p class="panel-note">Deployment metrics, co-occurrence drift, and sensor quality pressure in one band.</p>
+          </div>
+          <div class="diagnostics-grid" id="diagnostics-grid"></div>
+          <div class="threshold-strip" id="threshold-strip"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/js/app.js" defer></script>
+</body>
+</html>

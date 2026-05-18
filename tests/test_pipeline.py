@@ -1,51 +1,74 @@
-import tempfile
-from pathlib import Path
+from fastapi.testclient import TestClient
 
-import pandas as pd
-
-from src.config import RAW_DATA_PATH, LABEL_COLS
+import app as app_module
+from src.config import MODELS_DIR, OUTPUTS_DIR, RAW_DATA_PATH
 from src.data_loading import load_raw_data
-from src.preprocessing import preprocess_raw
 from src.features import build_feature_frame
+from src.monitoring import build_dashboard_snapshot
+from src.preprocessing import MISSING_COLS, preprocess_raw
+from src.validation import validation_summary
 
 
-def test_data_loading():
+def test_validation_summary_tracks_known_sensor_issues():
     df = load_raw_data(str(RAW_DATA_PATH))
-    assert len(df) > 0, "No rows loaded"
-    assert "timestamp" in df.columns, "Missing timestamp column"
-    print("✓ test_data_loading passed")
+    summary = validation_summary(df)
+
+    assert summary["duplicates_excluding_reading_id"] == 28
+    assert summary["physical_checks"]["pm10_less_than_pm25"] == 409
+    assert summary["physical_checks"]["zero_wind_speed"] == 129
 
 
-def test_preprocessing():
-    df = load_raw_data(str(RAW_DATA_PATH))
-    clean_df = preprocess_raw(df)
-    assert "season" in clean_df.columns, "Season column missing after cleanup"
-    assert clean_df["season"].notna().all(), "Null season values after cleanup"
-    assert clean_df["station_type"].notna().all(), "Null station_type values after cleanup"
-    print("✓ test_preprocessing passed")
-
-
-def test_features():
+def test_preprocessing_repairs_and_imputes_sensor_values():
     df = load_raw_data(str(RAW_DATA_PATH))
     clean_df = preprocess_raw(df)
-    feature_df = build_feature_frame(clean_df)
-    
-    expected_features = ["hour_sin", "hour_cos", "pm_fine_ratio", "pm25_roll3_mean", "pm25_trend"]
-    for feat in expected_features:
-        assert feat in feature_df.columns, f"Missing expected feature: {feat}"
-    print("✓ test_features passed")
+
+    assert len(clean_df) == 10000
+    assert clean_df["season"].isin(["Winter", "Spring", "Summer", "Fall", "Unknown"]).all()
+    assert (clean_df["pm10"] >= clean_df["pm25"]).all()
+    assert clean_df[MISSING_COLS].isna().sum().sum() == 0
+    assert {"pm10_adjusted_flag", "aqi_gap_flag", "wind_speed_zero_flag"}.issubset(clean_df.columns)
 
 
-def test_labels_present():
+def test_features_cover_operational_risk_context():
     df = load_raw_data(str(RAW_DATA_PATH))
-    for label in LABEL_COLS:
-        assert label in df.columns, f"Missing label column: {label}"
-    print("✓ test_labels_present passed")
+    feature_df = build_feature_frame(preprocess_raw(df))
+
+    expected_features = {
+        "pm25_cardio_zone",
+        "multi_label_event",
+        "pollutants_above_who",
+        "pm25_roll3_mean",
+        "aqi_trend",
+    }
+
+    assert expected_features.issubset(feature_df.columns)
+    assert "wind_dir_deg" not in feature_df.columns
+    assert "hour" not in feature_df.columns
+    assert "month" not in feature_df.columns
 
 
-if __name__ == "__main__":
-    test_data_loading()
-    test_preprocessing()
-    test_features()
-    test_labels_present()
-    print("\nAll tests passed!")
+def test_dashboard_snapshot_includes_live_sections():
+    snapshot = build_dashboard_snapshot(
+        OUTPUTS_DIR / "smoke_test_predictions.csv",
+        metrics_path=MODELS_DIR / "metrics_summary.json",
+    )
+
+    assert snapshot["status"] == "ok"
+    assert {"overview", "alerts", "stations", "timeline", "labels", "monitoring", "model"}.issubset(snapshot.keys())
+    assert len(snapshot["labels"]) == 5
+
+
+def test_dashboard_api_returns_json(monkeypatch):
+    monkeypatch.setattr(app_module, "PREDICTIONS_PATH", OUTPUTS_DIR / "smoke_test_predictions.csv")
+    monkeypatch.setattr(app_module, "METRICS_PATH", MODELS_DIR / "metrics_summary.json")
+
+    client = TestClient(app_module.app)
+    response = client.get("/api/dashboard")
+    home_response = client.get("/")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "ok"
+    assert "overview" in payload
+    assert home_response.status_code == 200
+    assert "Air Quality Command Center" in home_response.text

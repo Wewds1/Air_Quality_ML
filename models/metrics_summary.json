@@ -1,25 +1,292 @@
 {
-  "selected_model": "baseline_rf",
-  "baseline_metrics": {
-    "hamming_loss": 0.0361914257228315,
-    "f1_micro": 0.9497716894977168,
-    "f1_macro": 0.939630288427242,
-    "exact_match": 0.8334995014955134,
-    "jaccard_samples": 0.7359006314390163
-  },
-  "chain_metrics": {
-    "hamming_loss": 0.07258225324027916,
-    "f1_micro": 0.8999725199230558,
-    "f1_macro": 0.8871033647020615,
-    "exact_match": 0.6929212362911267,
-    "jaccard_samples": 0.6493187105350615
-  },
+  "selected_model": "random_forest",
   "selected_metrics": {
-    "hamming_loss": 0.0361914257228315,
-    "f1_micro": 0.9497716894977168,
-    "f1_macro": 0.939630288427242,
-    "exact_match": 0.8334995014955134,
-    "jaccard_samples": 0.7359006314390163
+    "hamming_loss": 0.0358,
+    "f1_micro": 0.9505388228792484,
+    "f1_macro": 0.9406409861019375,
+    "exact_match": 0.834,
+    "jaccard_samples": 0.7366916666666666,
+    "per_label": {
+      "label_respiratory_risk": {
+        "precision": 0.9785575048732943,
+        "recall": 0.9177330895795247,
+        "f1": 0.9471698113207547
+      },
+      "label_cardiovascular_risk": {
+        "precision": 0.9671052631578947,
+        "recall": 0.8698224852071006,
+        "f1": 0.9158878504672897
+      },
+      "label_vulnerable_alert": {
+        "precision": 0.9639519359145527,
+        "recall": 0.987688098495212,
+        "f1": 0.9756756756756757
+      },
+      "label_outdoor_warning": {
+        "precision": 0.9603448275862069,
+        "recall": 0.9191419141914191,
+        "f1": 0.93929173693086
+      },
+      "label_industrial_event": {
+        "precision": 0.9568452380952381,
+        "recall": 0.8955431754874652,
+        "f1": 0.9251798561151079
+      }
+    }
+  },
+  "candidate_metrics": {
+    "random_forest": {
+      "thresholds": {
+        "label_respiratory_risk": 0.5,
+        "label_cardiovascular_risk": 0.5,
+        "label_vulnerable_alert": 0.5,
+        "label_outdoor_warning": 0.5,
+        "label_industrial_event": 0.3
+      },
+      "validation_tuned_metrics": {
+        "hamming_loss": 0.0364,
+        "f1_micro": 0.950784207679827,
+        "f1_macro": 0.9360106670272742,
+        "exact_match": 0.831,
+        "jaccard_samples": 0.7319666666666667,
+        "per_label": {
+          "label_respiratory_risk": {
+            "precision": 0.9887218045112782,
+            "recall": 0.8976109215017065,
+            "f1": 0.9409660107334525
+          },
+          "label_cardiovascular_risk": {
+            "precision": 0.9515151515151515,
+            "recall": 0.8306878306878307,
+            "f1": 0.8870056497175142
+          },
+          "label_vulnerable_alert": {
+            "precision": 0.9735099337748344,
+            "recall": 0.9959349593495935,
+            "f1": 0.9845947756195579
+          },
+          "label_outdoor_warning": {
+            "precision": 0.9801324503311258,
+            "recall": 0.9107692307692308,
+            "f1": 0.9441786283891547
+          },
+          "label_industrial_event": {
+            "precision": 0.9623824451410659,
+            "recall": 0.8872832369942196,
+            "f1": 0.9233082706766917
+          }
+        }
+      },
+      "test_tuned_metrics": {
+        "hamming_loss": 0.0358,
+        "f1_micro": 0.9505388228792484,
+        "f1_macro": 0.9406409861019375,
+        "exact_match": 0.834,
+        "jaccard_samples": 0.7366916666666666,
+        "per_label": {
+          "label_respiratory_risk": {
+            "precision": 0.9785575048732943,
+            "recall": 0.9177330895795247,
+            "f1": 0.9471698113207547
+          },
+          "label_cardiovascular_risk": {
+            "precision": 0.9671052631578947,
+            "recall": 0.8698224852071006,
+            "f1": 0.9158878504672897
+          },
+          "label_vulnerable_alert": {
+            "precision": 0.9639519359145527,
+            "recall": 0.987688098495212,
+            "f1": 0.9756756756756757
+          },
+          "label_outdoor_warning": {
+            "precision": 0.9603448275862069,
+            "recall": 0.9191419141914191,
+            "f1": 0.93929173693086
+          },
+          "label_industrial_event": {
+            "precision": 0.9568452380952381,
+            "recall": 0.8955431754874652,
+            "f1": 0.9251798561151079
+          }
+        }
+      },
+      "validation_threshold_scores": {
+        "label_respiratory_risk": 0.941,
+        "label_cardiovascular_risk": 0.887,
+        "label_vulnerable_alert": 0.9846,
+        "label_outdoor_warning": 0.9442,
+        "label_industrial_event": 0.9233
+      }
+    },
+    "extra_trees": {
+      "thresholds": {
+        "label_respiratory_risk": 0.5,
+        "label_cardiovascular_risk": 0.3,
+        "label_vulnerable_alert": 0.5,
+        "label_outdoor_warning": 0.3,
+        "label_industrial_event": 0.4
+      },
+      "validation_tuned_metrics": {
+        "hamming_loss": 0.0438,
+        "f1_micro": 0.9408906882591093,
+        "f1_macro": 0.9255135946014145,
+        "exact_match": 0.795,
+        "jaccard_samples": 0.7149500000000001,
+        "per_label": {
+          "label_respiratory_risk": {
+            "precision": 0.9887218045112782,
+            "recall": 0.8976109215017065,
+            "f1": 0.9409660107334525
+          },
+          "label_cardiovascular_risk": {
+            "precision": 0.950920245398773,
+            "recall": 0.8201058201058201,
+            "f1": 0.8806818181818182
+          },
+          "label_vulnerable_alert": {
+            "precision": 0.9720372836218375,
+            "recall": 0.989159891598916,
+            "f1": 0.9805238415043653
+          },
+          "label_outdoor_warning": {
+            "precision": 0.9700996677740864,
+            "recall": 0.8984615384615384,
+            "f1": 0.9329073482428115
+          },
+          "label_industrial_event": {
+            "precision": 0.9099099099099099,
+            "recall": 0.8757225433526011,
+            "f1": 0.8924889543446245
+          }
+        }
+      },
+      "test_tuned_metrics": {
+        "hamming_loss": 0.0444,
+        "f1_micro": 0.9387586206896552,
+        "f1_macro": 0.9274071775077269,
+        "exact_match": 0.7985,
+        "jaccard_samples": 0.7184166666666667,
+        "per_label": {
+          "label_respiratory_risk": {
+            "precision": 0.9785575048732943,
+            "recall": 0.9177330895795247,
+            "f1": 0.9471698113207547
+          },
+          "label_cardiovascular_risk": {
+            "precision": 0.9477124183006536,
+            "recall": 0.8579881656804734,
+            "f1": 0.9006211180124224
+          },
+          "label_vulnerable_alert": {
+            "precision": 0.9642616318273769,
+            "recall": 0.9781121751025992,
+            "f1": 0.9711375212224108
+          },
+          "label_outdoor_warning": {
+            "precision": 0.9367521367521368,
+            "recall": 0.9042904290429042,
+            "f1": 0.9202350965575147
+          },
+          "label_industrial_event": {
+            "precision": 0.9147398843930635,
+            "recall": 0.8816155988857939,
+            "f1": 0.8978723404255319
+          }
+        }
+      },
+      "validation_threshold_scores": {
+        "label_respiratory_risk": 0.941,
+        "label_cardiovascular_risk": 0.8807,
+        "label_vulnerable_alert": 0.9805,
+        "label_outdoor_warning": 0.9329,
+        "label_industrial_event": 0.8925
+      }
+    },
+    "classifier_chain_lr": {
+      "thresholds": {
+        "label_respiratory_risk": 0.45,
+        "label_cardiovascular_risk": 0.8,
+        "label_vulnerable_alert": 0.35,
+        "label_outdoor_warning": 0.4,
+        "label_industrial_event": 0.55
+      },
+      "validation_tuned_metrics": {
+        "hamming_loss": 0.0554,
+        "f1_micro": 0.9240471620510008,
+        "f1_macro": 0.9072949625823019,
+        "exact_match": 0.756,
+        "jaccard_samples": 0.6921499999999999,
+        "per_label": {
+          "label_respiratory_risk": {
+            "precision": 0.9846153846153847,
+            "recall": 0.8737201365187713,
+            "f1": 0.9258589511754068
+          },
+          "label_cardiovascular_risk": {
+            "precision": 0.9545454545454546,
+            "recall": 0.7777777777777778,
+            "f1": 0.8571428571428571
+          },
+          "label_vulnerable_alert": {
+            "precision": 0.9622132253711201,
+            "recall": 0.9661246612466124,
+            "f1": 0.9641649763353617
+          },
+          "label_outdoor_warning": {
+            "precision": 0.9452054794520548,
+            "recall": 0.8492307692307692,
+            "f1": 0.8946515397082658
+          },
+          "label_industrial_event": {
+            "precision": 0.948220064724919,
+            "recall": 0.846820809248555,
+            "f1": 0.8946564885496183
+          }
+        }
+      },
+      "test_tuned_metrics": {
+        "hamming_loss": 0.0571,
+        "f1_micro": 0.9200392101946506,
+        "f1_macro": 0.9108078783109088,
+        "exact_match": 0.7565,
+        "jaccard_samples": 0.6830499999999999,
+        "per_label": {
+          "label_respiratory_risk": {
+            "precision": 0.9610136452241715,
+            "recall": 0.9012797074954296,
+            "f1": 0.930188679245283
+          },
+          "label_cardiovascular_risk": {
+            "precision": 0.9651567944250871,
+            "recall": 0.8195266272189349,
+            "f1": 0.8864
+          },
+          "label_vulnerable_alert": {
+            "precision": 0.9552134359692093,
+            "recall": 0.9336525307797537,
+            "f1": 0.9443099273607748
+          },
+          "label_outdoor_warning": {
+            "precision": 0.9184027777777778,
+            "recall": 0.8729372937293729,
+            "f1": 0.8950930626057529
+          },
+          "label_industrial_event": {
+            "precision": 0.9338345864661655,
+            "recall": 0.8649025069637883,
+            "f1": 0.8980477223427332
+          }
+        }
+      },
+      "validation_threshold_scores": {
+        "label_respiratory_risk": 0.9259,
+        "label_cardiovascular_risk": 0.8571,
+        "label_vulnerable_alert": 0.9642,
+        "label_outdoor_warning": 0.8947,
+        "label_industrial_event": 0.8947
+      }
+    }
   },
   "label_order": [
     "label_respiratory_risk",
@@ -27,5 +294,133 @@
     "label_vulnerable_alert",
     "label_outdoor_warning",
     "label_industrial_event"
-  ]
+  ],
+  "feature_columns": [
+    "year",
+    "day_of_week",
+    "is_weekend",
+    "is_rush_hour",
+    "season",
+    "station_id",
+    "station_type",
+    "elevation_m",
+    "near_highway",
+    "near_industry",
+    "temp_c",
+    "humidity_pct",
+    "wind_speed_ms",
+    "pressure_hpa",
+    "precipitation_mm",
+    "visibility_km",
+    "temp_inversion",
+    "pm25",
+    "pm10",
+    "no2",
+    "o3",
+    "so2",
+    "co",
+    "benzene",
+    "aqi",
+    "benzene_missing",
+    "visibility_km_missing",
+    "wind_dir_deg_missing",
+    "pressure_hpa_missing",
+    "pm10_adjusted_flag",
+    "aqi_reference_pm25",
+    "aqi_gap",
+    "aqi_gap_flag",
+    "wind_speed_zero_flag",
+    "hour_sin",
+    "hour_cos",
+    "month_sin",
+    "month_cos",
+    "wind_sin",
+    "wind_cos",
+    "pm_fine_ratio",
+    "oxidant_load",
+    "combustion_index",
+    "industrial_signature",
+    "aqi_excess_150",
+    "aqi_excess_100",
+    "log_pm25",
+    "log_pm10",
+    "log_no2",
+    "log_so2",
+    "log_co",
+    "log_benzene",
+    "log_aqi",
+    "dispersion_index",
+    "precipitation_flag",
+    "heavy_rain",
+    "heat_ozone_risk",
+    "inversion_severity",
+    "haze_flag",
+    "urban_heat",
+    "industrial_downwind",
+    "urban_rush",
+    "pm25_cardio_zone",
+    "multi_label_event",
+    "pollutants_above_who",
+    "pm25_roll3_mean",
+    "pm25_lag1",
+    "pm25_trend",
+    "no2_roll3_mean",
+    "no2_lag1",
+    "no2_trend",
+    "aqi_roll3_mean",
+    "aqi_lag1",
+    "aqi_trend",
+    "pm25_rising"
+  ],
+  "feature_count": 75,
+  "split_rows": {
+    "train": 7000,
+    "validation": 1000,
+    "test": 2000
+  },
+  "training_label_rates": {
+    "label_respiratory_risk": 0.2877,
+    "label_cardiovascular_risk": 0.1829,
+    "label_vulnerable_alert": 0.7336,
+    "label_outdoor_warning": 0.3129,
+    "label_industrial_event": 0.3549
+  },
+  "training_label_cooccurrence": {
+    "label_respiratory_risk": {
+      "label_respiratory_risk": 0.2877,
+      "label_cardiovascular_risk": 0.1291,
+      "label_vulnerable_alert": 0.2739,
+      "label_outdoor_warning": 0.2601,
+      "label_industrial_event": 0.1337
+    },
+    "label_cardiovascular_risk": {
+      "label_respiratory_risk": 0.1291,
+      "label_cardiovascular_risk": 0.1829,
+      "label_vulnerable_alert": 0.1673,
+      "label_outdoor_warning": 0.1361,
+      "label_industrial_event": 0.0893
+    },
+    "label_vulnerable_alert": {
+      "label_respiratory_risk": 0.2739,
+      "label_cardiovascular_risk": 0.1673,
+      "label_vulnerable_alert": 0.7336,
+      "label_outdoor_warning": 0.2981,
+      "label_industrial_event": 0.2883
+    },
+    "label_outdoor_warning": {
+      "label_respiratory_risk": 0.2601,
+      "label_cardiovascular_risk": 0.1361,
+      "label_vulnerable_alert": 0.2981,
+      "label_outdoor_warning": 0.3129,
+      "label_industrial_event": 0.141
+    },
+    "label_industrial_event": {
+      "label_respiratory_risk": 0.1337,
+      "label_cardiovascular_risk": 0.0893,
+      "label_vulnerable_alert": 0.2883,
+      "label_outdoor_warning": 0.141,
+      "label_industrial_event": 0.3549
+    }
+  },
+  "trained_at_utc": "2026-05-18T15:20:13.190719+00:00"
 }
