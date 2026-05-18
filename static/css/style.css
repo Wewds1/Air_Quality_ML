@@ -338,6 +338,15 @@ a {
   font-size: 1.6rem;
 }
 
+.timeline-label {
+  display: block;
+  margin-bottom: 6px;
+  color: rgba(0, 0, 0, 0.62);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 .label-grid,
 .station-grid,
 .diagnostics-grid {
@@ -501,6 +510,29 @@ a {
   padding: 10px 12px;
   font-size: 0.68rem;
   color: var(--paper-2);
+}
+
+.light-panel .panel-note,
+.split-column.light-panel .panel-note {
+  color: rgba(17, 17, 17, 0.72);
+}
+
+.light-panel .label-name,
+.light-panel .label-rate,
+.light-panel .timeline-meta strong,
+.split-column.light-panel .alert-name,
+.split-column.light-panel .alert-score {
+  color: var(--ink);
+}
+
+.split-column.light-panel .alert-meta {
+  color: rgba(17, 17, 17, 0.5);
+}
+
+.light-panel .placeholder,
+.split-column.light-panel .placeholder {
+  color: rgba(17, 17, 17, 0.62);
+  border-color: rgba(17, 17, 17, 0.18);
 }
 
 .placeholder {

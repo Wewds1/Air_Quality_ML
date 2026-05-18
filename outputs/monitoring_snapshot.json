@@ -1,13 +1,13 @@
 {
   "status": "ok",
-  "generated_at": "2026-05-18T15:53:20.407861+00:00",
-  "data_signature": "1779119600301804400:10000",
+  "generated_at": "2026-05-18T16:17:28.618543+00:00",
+  "data_signature": "1779120011642290300:10000",
   "overview": {
     "readings_scored": 10000,
     "stations_seen": 6,
     "active_alert_rows": 8081,
     "latest_timestamp": "2023-12-31T16:00:00",
-    "latest_scored_at": "2026-05-18T15:53:20.119632+00:00",
+    "latest_scored_at": "2026-05-18T16:00:11.436866+00:00",
     "avg_aqi": 78.82,
     "avg_total_alerts": 1.85,
     "max_risk_prob": 1.0
@@ -22,7 +22,7 @@
       "dominant_risk": "Cardiovascular Risk",
       "max_risk_prob": 1.0,
       "timestamp": "2021-01-22T12:00:00",
-      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+      "scored_at": "2026-05-18T16:00:11.436866+00:00"
     },
     {
       "reading_id": "RDG0003460",
@@ -33,7 +33,7 @@
       "dominant_risk": "Outdoor Warning",
       "max_risk_prob": 1.0,
       "timestamp": "2022-01-09T08:00:00",
-      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+      "scored_at": "2026-05-18T16:00:11.436866+00:00"
     },
     {
       "reading_id": "RDG0005821",
@@ -44,7 +44,7 @@
       "dominant_risk": "Outdoor Warning",
       "max_risk_prob": 1.0,
       "timestamp": "2022-09-19T16:00:00",
-      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+      "scored_at": "2026-05-18T16:00:11.436866+00:00"
     },
     {
       "reading_id": "RDG0003944",
@@ -55,7 +55,7 @@
       "dominant_risk": "Respiratory Risk",
       "max_risk_prob": 1.0,
       "timestamp": "2022-03-03T10:00:00",
-      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+      "scored_at": "2026-05-18T16:00:11.436866+00:00"
     },
     {
       "reading_id": "RDG0009811",
@@ -66,7 +66,7 @@
       "dominant_risk": "Outdoor Warning",
       "max_risk_prob": 1.0,
       "timestamp": "2023-12-08T11:00:00",
-      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+      "scored_at": "2026-05-18T16:00:11.436866+00:00"
     },
     {
       "reading_id": "RDG0009438",
@@ -77,7 +77,7 @@
       "dominant_risk": "Cardiovascular Risk",
       "max_risk_prob": 1.0,
       "timestamp": "2023-10-30T06:00:00",
-      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+      "scored_at": "2026-05-18T16:00:11.436866+00:00"
     },
     {
       "reading_id": "RDG0001958",
@@ -88,7 +88,7 @@
       "dominant_risk": "Cardiovascular Risk",
       "max_risk_prob": 1.0,
       "timestamp": "2021-07-30T02:00:00",
-      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+      "scored_at": "2026-05-18T16:00:11.436866+00:00"
     },
     {
       "reading_id": "RDG0003759",
@@ -99,10 +99,19 @@
       "dominant_risk": "Outdoor Warning",
       "max_risk_prob": 1.0,
       "timestamp": "2022-02-11T04:00:00",
-      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+      "scored_at": "2026-05-18T16:00:11.436866+00:00"
     }
   ],
   "stations": [
+    {
+      "station_id": "STN_SUBURB_01",
+      "station_type": "Suburban",
+      "aqi": 14.0,
+      "total_alerts": 4,
+      "max_risk_prob": 0.9957,
+      "dominant_risk": "Respiratory Risk",
+      "quality_flags": 0
+    },
     {
       "station_id": "STN_URBAN_01",
       "station_type": "Urban",
@@ -111,6 +120,42 @@
       "max_risk_prob": 0.9936,
       "dominant_risk": "Outdoor Warning",
       "quality_flags": 1
+    },
+    {
+      "station_id": "STN_SUBURB_02",
+      "station_type": "Suburban",
+      "aqi": 101.0,
+      "total_alerts": 3,
+      "max_risk_prob": 0.9898,
+      "dominant_risk": "Outdoor Warning",
+      "quality_flags": 0
+    },
+    {
+      "station_id": "STN_URBAN_02",
+      "station_type": "Urban",
+      "aqi": 141.0,
+      "total_alerts": 1,
+      "max_risk_prob": 0.9815,
+      "dominant_risk": "Vulnerable Alert",
+      "quality_flags": 0
+    },
+    {
+      "station_id": "STN_INDUSTRIAL_01",
+      "station_type": "Industrial",
+      "aqi": 121.0,
+      "total_alerts": 1,
+      "max_risk_prob": 0.9578,
+      "dominant_risk": "Industrial Event",
+      "quality_flags": 0
+    },
+    {
+      "station_id": "STN_RURAL_01",
+      "station_type": "Rural",
+      "aqi": 76.0,
+      "total_alerts": 1,
+      "max_risk_prob": 0.889,
+      "dominant_risk": "Vulnerable Alert",
+      "quality_flags": 0
     }
   ],
   "timeline": [

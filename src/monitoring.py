@@ -111,8 +111,14 @@ def build_station_summary(df: pd.DataFrame) -> list[dict]:
     if "timestamp" not in df.columns or df["timestamp"].dropna().empty:
         return []
 
-    latest_timestamp = df["timestamp"].dropna().max()
-    latest_df = df[df["timestamp"] == latest_timestamp].copy()
+    latest_idx = (
+        df.sort_values(["station_id", "timestamp"])
+        .groupby("station_id", dropna=False)["timestamp"]
+        .idxmax()
+        .dropna()
+        .astype(int)
+    )
+    latest_df = df.loc[latest_idx].copy()
     stations = []
 
     for station_id, station_df in latest_df.groupby("station_id"):
