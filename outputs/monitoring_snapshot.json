@@ -1,0 +1,376 @@
+{
+  "status": "ok",
+  "generated_at": "2026-05-18T15:53:20.407861+00:00",
+  "data_signature": "1779119600301804400:10000",
+  "overview": {
+    "readings_scored": 10000,
+    "stations_seen": 6,
+    "active_alert_rows": 8081,
+    "latest_timestamp": "2023-12-31T16:00:00",
+    "latest_scored_at": "2026-05-18T15:53:20.119632+00:00",
+    "avg_aqi": 78.82,
+    "avg_total_alerts": 1.85,
+    "max_risk_prob": 1.0
+  },
+  "alerts": [
+    {
+      "reading_id": "RDG0000193",
+      "station_id": "STN_INDUSTRIAL_01",
+      "station_type": "Industrial",
+      "aqi": 169.0,
+      "total_alerts": 4,
+      "dominant_risk": "Cardiovascular Risk",
+      "max_risk_prob": 1.0,
+      "timestamp": "2021-01-22T12:00:00",
+      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+    },
+    {
+      "reading_id": "RDG0003460",
+      "station_id": "STN_INDUSTRIAL_01",
+      "station_type": "Industrial",
+      "aqi": 166.0,
+      "total_alerts": 4,
+      "dominant_risk": "Outdoor Warning",
+      "max_risk_prob": 1.0,
+      "timestamp": "2022-01-09T08:00:00",
+      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+    },
+    {
+      "reading_id": "RDG0005821",
+      "station_id": "STN_RURAL_01",
+      "station_type": "Rural",
+      "aqi": 141.0,
+      "total_alerts": 4,
+      "dominant_risk": "Outdoor Warning",
+      "max_risk_prob": 1.0,
+      "timestamp": "2022-09-19T16:00:00",
+      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+    },
+    {
+      "reading_id": "RDG0003944",
+      "station_id": "STN_URBAN_02",
+      "station_type": "Urban",
+      "aqi": 138.0,
+      "total_alerts": 5,
+      "dominant_risk": "Respiratory Risk",
+      "max_risk_prob": 1.0,
+      "timestamp": "2022-03-03T10:00:00",
+      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+    },
+    {
+      "reading_id": "RDG0009811",
+      "station_id": "STN_INDUSTRIAL_01",
+      "station_type": "Industrial",
+      "aqi": 131.0,
+      "total_alerts": 4,
+      "dominant_risk": "Outdoor Warning",
+      "max_risk_prob": 1.0,
+      "timestamp": "2023-12-08T11:00:00",
+      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+    },
+    {
+      "reading_id": "RDG0009438",
+      "station_id": "STN_SUBURB_02",
+      "station_type": "Suburban",
+      "aqi": 107.0,
+      "total_alerts": 5,
+      "dominant_risk": "Cardiovascular Risk",
+      "max_risk_prob": 1.0,
+      "timestamp": "2023-10-30T06:00:00",
+      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+    },
+    {
+      "reading_id": "RDG0001958",
+      "station_id": "STN_SUBURB_01",
+      "station_type": "Suburban",
+      "aqi": 105.0,
+      "total_alerts": 4,
+      "dominant_risk": "Cardiovascular Risk",
+      "max_risk_prob": 1.0,
+      "timestamp": "2021-07-30T02:00:00",
+      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+    },
+    {
+      "reading_id": "RDG0003759",
+      "station_id": "STN_SUBURB_01",
+      "station_type": "Suburban",
+      "aqi": 100.0,
+      "total_alerts": 4,
+      "dominant_risk": "Outdoor Warning",
+      "max_risk_prob": 1.0,
+      "timestamp": "2022-02-11T04:00:00",
+      "scored_at": "2026-05-18T15:53:20.119632+00:00"
+    }
+  ],
+  "stations": [
+    {
+      "station_id": "STN_URBAN_01",
+      "station_type": "Urban",
+      "aqi": 58.0,
+      "total_alerts": 3,
+      "max_risk_prob": 0.9936,
+      "dominant_risk": "Outdoor Warning",
+      "quality_flags": 1
+    }
+  ],
+  "timeline": [
+    {
+      "timestamp": "2023-12-28T16:00:00",
+      "avg_aqi": 168.0,
+      "avg_total_alerts": 3.0,
+      "max_risk_prob": 0.978,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-28T20:00:00",
+      "avg_aqi": 187.0,
+      "avg_total_alerts": 0.0,
+      "max_risk_prob": 0.0339,
+      "active_rows": 0
+    },
+    {
+      "timestamp": "2023-12-28T21:00:00",
+      "avg_aqi": 88.0,
+      "avg_total_alerts": 2.0,
+      "max_risk_prob": 0.9667,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-28T23:00:00",
+      "avg_aqi": 31.0,
+      "avg_total_alerts": 1.0,
+      "max_risk_prob": 0.9691,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-29T04:00:00",
+      "avg_aqi": 159.0,
+      "avg_total_alerts": 5.0,
+      "max_risk_prob": 0.9944,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-29T09:00:00",
+      "avg_aqi": 113.0,
+      "avg_total_alerts": 1.0,
+      "max_risk_prob": 0.9428,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-29T10:00:00",
+      "avg_aqi": 17.0,
+      "avg_total_alerts": 1.0,
+      "max_risk_prob": 0.9724,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-29T12:00:00",
+      "avg_aqi": 57.0,
+      "avg_total_alerts": 1.0,
+      "max_risk_prob": 0.9524,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-29T14:00:00",
+      "avg_aqi": 162.0,
+      "avg_total_alerts": 5.0,
+      "max_risk_prob": 0.9927,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-29T17:00:00",
+      "avg_aqi": 139.0,
+      "avg_total_alerts": 1.0,
+      "max_risk_prob": 0.9522,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-30T04:00:00",
+      "avg_aqi": 155.0,
+      "avg_total_alerts": 2.0,
+      "max_risk_prob": 0.9613,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-30T06:00:00",
+      "avg_aqi": 15.0,
+      "avg_total_alerts": 4.0,
+      "max_risk_prob": 0.9935,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-30T10:00:00",
+      "avg_aqi": 161.0,
+      "avg_total_alerts": 1.0,
+      "max_risk_prob": 0.9647,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-30T11:00:00",
+      "avg_aqi": 142.0,
+      "avg_total_alerts": 0.0,
+      "max_risk_prob": 0.118,
+      "active_rows": 0
+    },
+    {
+      "timestamp": "2023-12-30T16:00:00",
+      "avg_aqi": 101.0,
+      "avg_total_alerts": 3.0,
+      "max_risk_prob": 0.9898,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-30T18:00:00",
+      "avg_aqi": 56.0,
+      "avg_total_alerts": 1.0,
+      "max_risk_prob": 0.9582,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-30T19:00:00",
+      "avg_aqi": 98.0,
+      "avg_total_alerts": 5.0,
+      "max_risk_prob": 0.9992,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-31T03:00:00",
+      "avg_aqi": 84.0,
+      "avg_total_alerts": 0.0,
+      "max_risk_prob": 0.0623,
+      "active_rows": 0
+    },
+    {
+      "timestamp": "2023-12-31T06:00:00",
+      "avg_aqi": 121.0,
+      "avg_total_alerts": 1.0,
+      "max_risk_prob": 0.9578,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-31T08:00:00",
+      "avg_aqi": 76.0,
+      "avg_total_alerts": 1.0,
+      "max_risk_prob": 0.889,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-31T09:00:00",
+      "avg_aqi": 123.0,
+      "avg_total_alerts": 0.0,
+      "max_risk_prob": 0.1113,
+      "active_rows": 0
+    },
+    {
+      "timestamp": "2023-12-31T10:00:00",
+      "avg_aqi": 141.0,
+      "avg_total_alerts": 1.0,
+      "max_risk_prob": 0.9815,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-31T12:00:00",
+      "avg_aqi": 14.0,
+      "avg_total_alerts": 4.0,
+      "max_risk_prob": 0.9957,
+      "active_rows": 1
+    },
+    {
+      "timestamp": "2023-12-31T16:00:00",
+      "avg_aqi": 58.0,
+      "avg_total_alerts": 3.0,
+      "max_risk_prob": 0.9936,
+      "active_rows": 1
+    }
+  ],
+  "labels": [
+    {
+      "label": "label_respiratory_risk",
+      "display_name": "Respiratory Risk",
+      "current_rate": 0.2767,
+      "training_rate": 0.2877,
+      "rate_gap": -0.011
+    },
+    {
+      "label": "label_cardiovascular_risk",
+      "display_name": "Cardiovascular Risk",
+      "current_rate": 0.1761,
+      "training_rate": 0.1829,
+      "rate_gap": -0.0068
+    },
+    {
+      "label": "label_vulnerable_alert",
+      "display_name": "Vulnerable Alert",
+      "current_rate": 0.7386,
+      "training_rate": 0.7336,
+      "rate_gap": 0.005
+    },
+    {
+      "label": "label_outdoor_warning",
+      "display_name": "Outdoor Warning",
+      "current_rate": 0.3032,
+      "training_rate": 0.3129,
+      "rate_gap": -0.0097
+    },
+    {
+      "label": "label_industrial_event",
+      "display_name": "Industrial Event",
+      "current_rate": 0.3549,
+      "training_rate": 0.3549,
+      "rate_gap": 0.0
+    }
+  ],
+  "monitoring": {
+    "quality_flag_rate": 0.2435,
+    "cooccurrence_gap": 0.0045,
+    "model": "random_forest",
+    "test_hamming_loss": 0.0358,
+    "test_f1_macro": 0.9406,
+    "test_exact_match": 0.834
+  },
+  "model": {
+    "selected_model": "random_forest",
+    "feature_count": 75,
+    "metrics": {
+      "hamming_loss": 0.0358,
+      "f1_micro": 0.9505388228792484,
+      "f1_macro": 0.9406409861019375,
+      "exact_match": 0.834,
+      "jaccard_samples": 0.7366916666666666,
+      "per_label": {
+        "label_respiratory_risk": {
+          "precision": 0.9785575048732943,
+          "recall": 0.9177330895795247,
+          "f1": 0.9471698113207547
+        },
+        "label_cardiovascular_risk": {
+          "precision": 0.9671052631578947,
+          "recall": 0.8698224852071006,
+          "f1": 0.9158878504672897
+        },
+        "label_vulnerable_alert": {
+          "precision": 0.9639519359145527,
+          "recall": 0.987688098495212,
+          "f1": 0.9756756756756757
+        },
+        "label_outdoor_warning": {
+          "precision": 0.9603448275862069,
+          "recall": 0.9191419141914191,
+          "f1": 0.93929173693086
+        },
+        "label_industrial_event": {
+          "precision": 0.9568452380952381,
+          "recall": 0.8955431754874652,
+          "f1": 0.9251798561151079
+        }
+      }
+    },
+    "thresholds": {
+      "label_respiratory_risk": 0.5,
+      "label_cardiovascular_risk": 0.5,
+      "label_vulnerable_alert": 0.5,
+      "label_outdoor_warning": 0.5,
+      "label_industrial_event": 0.3
+    }
+  }
+}
