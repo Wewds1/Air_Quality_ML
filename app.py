@@ -1,12 +1,21 @@
 import asyncio
 import json
+from typing import Any
 
 from fastapi import FastAPI, Query, Request
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
-from src.config import MODELS_DIR, OUTPUTS_DIR, STATIC_DIR
+from src.config import LIVE_PREDICTIONS_PATH, MODELS_DIR, OUTPUTS_DIR, STATIC_DIR
+from src.live_data import (
+    LiveReadingValidationError,
+    active_predictions_path,
+    persist_live_predictions,
+    persist_live_readings,
+    prepare_live_readings,
+)
 from src.monitoring import build_dashboard_snapshot, load_metrics_summary
+from src.score_batch import score_frame
 
 app = FastAPI(
     title="Air Quality Command Center",
@@ -24,7 +33,7 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 def _dashboard_snapshot(alert_limit: int = 8, timeline_points: int = 24) -> dict:
     return build_dashboard_snapshot(
-        predictions_path=PREDICTIONS_PATH,
+        predictions_path=active_predictions_path(PREDICTIONS_PATH),
         metrics_path=METRICS_PATH,
         alert_limit=alert_limit,
         timeline_points=timeline_points,
@@ -84,6 +93,34 @@ def api_metrics():
 @app.get("/metrics")
 def metrics():
     return api_metrics()
+
+
+@app.post("/api/readings")
+def ingest_readings(payload: dict[str, Any] | list[dict[str, Any]]):
+    try:
+        readings_df = prepare_live_readings(payload)
+    except LiveReadingValidationError as exc:
+        return JSONResponse({"status": "invalid_reading", "detail": str(exc)}, status_code=422)
+
+    persist_live_readings(readings_df)
+    scored_df = score_frame(readings_df)
+    persist_live_predictions(scored_df)
+
+    snapshot = build_dashboard_snapshot(
+        predictions_path=LIVE_PREDICTIONS_PATH,
+        metrics_path=METRICS_PATH,
+        alert_limit=min(len(scored_df), 8),
+        timeline_points=24,
+    )
+    latest_rows = scored_df[["reading_id", "station_id", "total_alerts", "max_risk_prob", "dominant_risk"]].to_dict(orient="records")
+
+    return {
+        "status": "ingested",
+        "ingested_count": int(len(scored_df)),
+        "active_predictions_path": str(LIVE_PREDICTIONS_PATH),
+        "latest_rows": latest_rows,
+        "dashboard_overview": snapshot["overview"],
+    }
 
 
 @app.get("/api/stream/dashboard")

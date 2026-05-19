@@ -43,13 +43,7 @@ def _load_model_metadata() -> dict:
     return json.loads(metrics_path.read_text(encoding="utf-8"))
 
 
-def score_batch(input_path: str, output_path: str | None = None) -> pd.DataFrame:
-    input_path = Path(input_path)
-    output_path = Path(output_path) if output_path else OUTPUTS_DIR / "batch_predictions.csv"
-
-    df = pd.read_csv(input_path)
-    df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
-
+def score_frame(df: pd.DataFrame, output_path: str | None = None) -> pd.DataFrame:
     preprocessor = joblib.load(MODELS_DIR / "preprocessor.pkl")
     model = joblib.load(MODELS_DIR / "multilabel_model.pkl")
     thresholds = json.loads((MODELS_DIR / "label_thresholds.json").read_text(encoding="utf-8"))
@@ -87,6 +81,17 @@ def score_batch(input_path: str, output_path: str | None = None) -> pd.DataFrame
     proba_matrix["model_version"] = model_metadata.get("selected_model", "unknown")
 
     scored = pd.concat([clean_df.reset_index(drop=True), proba_matrix], axis=1)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    scored.to_csv(output_path, index=False)
+    if output_path:
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        scored.to_csv(output_path, index=False)
     return scored
+
+
+def score_batch(input_path: str, output_path: str | None = None) -> pd.DataFrame:
+    input_path = Path(input_path)
+    output_path = Path(output_path) if output_path else OUTPUTS_DIR / "batch_predictions.csv"
+
+    df = pd.read_csv(input_path)
+    df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
+    return score_frame(df, str(output_path))

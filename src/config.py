@@ -12,6 +12,8 @@ RAW_DATA_PATH = DATA_RAW_DIR / "air_quality_readings.csv"
 ENGINEERED_SAMPLE_PATH = DATA_PROCESSED_DIR / "feature_engineering_sample.csv"
 FEATURE_COLUMNS_PATH = OUTPUTS_DIR / "feature_engineering_columns.json"
 MONITORING_SNAPSHOT_PATH = OUTPUTS_DIR / "monitoring_snapshot.json"
+LIVE_READINGS_PATH = OUTPUTS_DIR / "live_readings.csv"
+LIVE_PREDICTIONS_PATH = OUTPUTS_DIR / "live_predictions.csv"
 
 LABEL_COLS = [
     "label_respiratory_risk",
@@ -35,3 +37,49 @@ WHO_GUIDELINES = {
     "o3": 100.0,
     "so2": 40.0,
 }
+
+LIVE_BASE_COLUMNS = [
+    "reading_id",
+    "timestamp",
+    "station_id",
+    "station_type",
+    "elevation_m",
+    "near_highway",
+    "near_industry",
+    "temp_c",
+    "humidity_pct",
+    "wind_speed_ms",
+    "wind_dir_deg",
+    "pressure_hpa",
+    "precipitation_mm",
+    "visibility_km",
+    "temp_inversion",
+    "pm25",
+    "pm10",
+    "no2",
+    "o3",
+    "so2",
+    "co",
+    "benzene",
+    "aqi",
+]
+
+LIVE_REQUIRED_COLUMNS = [
+    "station_id",
+    "station_type",
+    "elevation_m",
+    "near_highway",
+    "near_industry",
+    "temp_c",
+    "humidity_pct",
+    "wind_speed_ms",
+    "precipitation_mm",
+    "temp_inversion",
+    "pm25",
+    "pm10",
+    "no2",
+    "o3",
+    "so2",
+    "co",
+    "aqi",
+]
