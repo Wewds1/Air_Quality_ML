@@ -43,6 +43,32 @@ def _load_model_metadata() -> dict:
     return json.loads(metrics_path.read_text(encoding="utf-8"))
 
 
+def _feature_columns_from_preprocessor(preprocessor) -> list[str] | None:
+    feature_names = getattr(preprocessor, "feature_names_in_", None)
+    if feature_names is None:
+        return None
+    return [str(column) for column in feature_names]
+
+
+def _resolve_feature_columns(
+    preprocessor,
+    feature_df: pd.DataFrame,
+    model_metadata: dict,
+) -> list[str]:
+    excluded_cols = {"reading_id", "timestamp", *LABEL_COLS}
+    column_candidates = [
+        _feature_columns_from_preprocessor(preprocessor),
+        _load_feature_columns(),
+        model_metadata.get("feature_columns"),
+    ]
+
+    for columns in column_candidates:
+        if columns:
+            return [column for column in columns if column not in excluded_cols]
+
+    return [column for column in feature_df.columns if column not in excluded_cols]
+
+
 def score_frame(df: pd.DataFrame, output_path: str | None = None) -> pd.DataFrame:
     preprocessor = joblib.load(MODELS_DIR / "preprocessor.pkl")
     model = joblib.load(MODELS_DIR / "multilabel_model.pkl")
@@ -51,10 +77,9 @@ def score_frame(df: pd.DataFrame, output_path: str | None = None) -> pd.DataFram
 
     clean_df = preprocess_raw(df)
     feature_df = build_feature_frame(clean_df)
-
-    trained_columns = _load_feature_columns()
-    excluded_cols = {"reading_id", "timestamp", *LABEL_COLS}
-    feature_cols = trained_columns or [column for column in feature_df.columns if column not in excluded_cols]
+    
+    
+    feature_cols = _resolve_feature_columns(preprocessor, feature_df, model_metadata)
     X = feature_df.reindex(columns=feature_cols)
 
     transformed = preprocessor.transform(X)

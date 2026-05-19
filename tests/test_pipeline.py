@@ -1,11 +1,17 @@
+import json
+
+import numpy as np
+import pandas as pd
 from fastapi.testclient import TestClient
 
 import app as app_module
+from src.config import LABEL_COLS
 from src.config import MODELS_DIR, OUTPUTS_DIR, RAW_DATA_PATH
 from src.data_loading import load_raw_data
 from src.features import build_feature_frame
 from src.monitoring import build_dashboard_snapshot
 from src.preprocessing import MISSING_COLS, preprocess_raw
+from src.score_batch import score_frame
 from src.validation import validation_summary
 
 
@@ -72,3 +78,74 @@ def test_dashboard_api_returns_json(monkeypatch):
     assert "overview" in payload
     assert home_response.status_code == 200
     assert "Air Quality Command Center" in home_response.text
+
+
+def test_score_frame_prefers_preprocessor_schema_over_stale_feature_contract(monkeypatch, tmp_path):
+    model_dir = tmp_path / "models"
+    outputs_dir = tmp_path / "outputs"
+    model_dir.mkdir()
+    outputs_dir.mkdir()
+
+    monkeypatch.setattr("src.score_batch.MODELS_DIR", model_dir)
+    monkeypatch.setattr("src.score_batch.OUTPUTS_DIR", outputs_dir)
+    monkeypatch.setattr("src.score_batch.FEATURE_COLUMNS_PATH", outputs_dir / "feature_engineering_columns.json")
+
+    (model_dir / "label_thresholds.json").write_text(
+        json.dumps({label: 0.5 for label in LABEL_COLS}),
+        encoding="utf-8",
+    )
+    (model_dir / "metrics_summary.json").write_text(
+        json.dumps({"selected_model": "stub-model"}),
+        encoding="utf-8",
+    )
+    (outputs_dir / "feature_engineering_columns.json").write_text(
+        json.dumps(["expected_a"]),
+        encoding="utf-8",
+    )
+
+    feature_df = pd.DataFrame(
+        {
+            "expected_a": [1.0],
+            "expected_b": [2.0],
+            "extra_feature": [99.0],
+        }
+    )
+
+    monkeypatch.setattr("src.score_batch.preprocess_raw", lambda df: df.copy())
+    monkeypatch.setattr("src.score_batch.build_feature_frame", lambda df: feature_df.copy())
+
+    class FakePreprocessor:
+        feature_names_in_ = np.array(["expected_a", "expected_b"], dtype=object)
+
+        def transform(self, X):
+            assert list(X.columns) == ["expected_a", "expected_b"]
+            return X.to_numpy(dtype=float)
+
+    class FakeModelWrapper:
+        def predict_proba(self, transformed):
+            return np.array([[0.8, 0.3, 0.9, 0.4, 0.6]])
+
+    class FakeModel:
+        named_steps = {"model": FakeModelWrapper()}
+
+    def fake_joblib_load(path):
+        if path.name == "preprocessor.pkl":
+            return FakePreprocessor()
+        if path.name == "multilabel_model.pkl":
+            return FakeModel()
+        raise AssertionError(f"Unexpected artifact requested: {path}")
+
+    monkeypatch.setattr("src.score_batch.joblib.load", fake_joblib_load)
+
+    scored_df = score_frame(
+        pd.DataFrame(
+            {
+                "reading_id": ["stub-1"],
+                "timestamp": [pd.Timestamp("2026-05-19T00:00:00Z")],
+            }
+        )
+    )
+
+    assert scored_df.loc[0, "prob_label_respiratory_risk"] == 0.8
+    assert scored_df.loc[0, "model_version"] == "stub-model"
+    assert scored_df.loc[0, "total_alerts"] == 3
