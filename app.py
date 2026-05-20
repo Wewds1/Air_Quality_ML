@@ -291,3 +291,80 @@ def get_predictions_history(limit: int = Query(default=20, ge=1, le=100)):
         "total_records": len(history),
         "records": history
     }
+
+
+@app.get("/api/generate-sample-data")
+def generate_sample_data_endpoint(count: int = Query(default=10, ge=1, le=100)):
+    """Generate synthetic sample data for batch predictions."""
+    try:
+        import numpy as np
+        
+        np.random.seed(42)
+        stations = ["STN_URBAN_01", "STN_URBAN_02", "STN_SUBURB_01", "STN_SUBURB_02", "STN_INDUSTRIAL_01", "STN_RURAL_01"]
+        station_types = ["Urban", "Suburban", "Industrial", "Rural"]
+        seasons = ["Winter", "Spring", "Summer", "Fall"]
+        
+        rows = []
+        for i in range(count):
+            pm25 = max(0, float(np.random.lognormal(mean=2.5, sigma=0.8)))
+            pm10_temp = pm25 * 0.8 if np.random.random() < 0.2 else max(0, pm25 * 1.5 + float(np.random.normal(0, 10)))
+            
+            rows.append({
+                "pm25": round(pm25, 1),
+                "pm10": round(pm10_temp, 1),
+                "aqi": max(0, int(pm25 * 3 + float(np.random.normal(0, 15)))),
+                "temp_c": round(float(np.random.uniform(-5, 35)), 1),
+                "humidity_pct": round(float(np.random.uniform(30, 95)), 1),
+                "wind_speed_ms": round(float(np.random.exponential(scale=3)), 1),
+                "season": str(np.random.choice(seasons)),
+                "station_type": str(np.random.choice(station_types)),
+            })
+        
+        return {
+            "status": "success",
+            "count": len(rows),
+            "rows": rows
+        }
+    except Exception as exc:
+        return JSONResponse(
+            {"status": "error", "detail": str(exc)},
+            status_code=400
+        )
+    
+@app.get("/api/generate-sample-data")
+def generate_sample_data_endpoint(count: int = Query(default=10, ge=1, le=100)):
+    """Generate synthetic sample data."""
+    try:
+        import numpy as np
+        
+        np.random.seed(42)
+        stations = ["STN_URBAN_01", "STN_URBAN_02", "STN_SUBURB_01", "STN_SUBURB_02", "STN_INDUSTRIAL_01", "STN_RURAL_01"]
+        station_types = ["Urban", "Suburban", "Industrial", "Rural"]
+        seasons = ["Winter", "Spring", "Summer", "Fall"]
+        
+        rows = []
+        for i in range(count):
+            pm25 = max(0, np.random.lognormal(mean=2.5, sigma=0.8))
+            pm10 = pm25 * 0.8 if np.random.random() < 0.2 else max(0, pm25 * 1.5 + np.random.normal(0, 10))
+            
+            rows.append({
+                "pm25": round(pm25, 1),
+                "pm10": round(pm10, 1),
+                "aqi": max(0, int(pm25 * 3 + np.random.normal(0, 15))),
+                "temp_c": round(np.random.uniform(-5, 35), 1),
+                "humidity_pct": round(np.random.uniform(30, 95), 1),
+                "wind_speed_ms": round(np.random.exponential(scale=3), 1),
+                "season": np.random.choice(seasons),
+                "station_type": np.random.choice(station_types),
+            })
+        
+        return {
+            "status": "success",
+            "count": len(rows),
+            "rows": rows
+        }
+    except Exception as exc:
+        return JSONResponse(
+            {"status": "error", "detail": str(exc)},
+            status_code=400
+        )

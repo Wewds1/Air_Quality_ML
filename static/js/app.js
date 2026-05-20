@@ -320,3 +320,318 @@ async function bootstrap() {
 }
 
 bootstrap();
+
+
+class PredictionManager {
+  constructor() {
+    this.batchRows = [];
+    this.initializeEventListeners();
+    this.loadHistory();
+  }
+
+  initializeEventListeners() {
+    // Manual form
+    document.getElementById("manual-form").addEventListener("submit", (e) => this.handleManualSubmit(e));
+
+    // Batch controls
+    document.getElementById("batch-add-row").addEventListener("click", () => this.addBatchRow());
+    document.getElementById("batch-generate-sample").addEventListener("click", () => this.generateSampleData());
+    document.getElementById("batch-clear").addEventListener("click", () => this.clearBatch());
+    document.getElementById("batch-submit").addEventListener("click", () => this.submitBatch());
+  }
+
+  async handleManualSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData);
+
+    // Convert to numbers
+    payload.pm25 = parseFloat(payload.pm25);
+    payload.pm10 = parseFloat(payload.pm10);
+    payload.aqi = parseInt(payload.aqi);
+    payload.temp_c = parseFloat(payload.temp_c);
+    payload.humidity_pct = parseFloat(payload.humidity_pct);
+    payload.wind_speed_ms = parseFloat(payload.wind_speed_ms);
+    payload.pressure_hpa = 1013;
+    payload.precipitation_mm = 0;
+    payload.visibility_km = 10;
+    payload.temp_inversion = 0;
+    payload.elevation_m = 100;
+    payload.near_highway = 0;
+    payload.near_industry = 0;
+    payload.station_id = "USR_MANUAL";
+    payload.co = 1;
+    payload.no2 = 30;
+    payload.o3 = 50;
+    payload.so2 = 5;
+    payload.benzene = 1;
+    payload.wind_dir_deg = 180;
+
+    try {
+      const response = await fetch("/api/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.status === "success") {
+        this.showResult("manual-result", true, result.prediction);
+        this.loadHistory();
+        form.reset();
+      } else {
+        this.showResult("manual-result", false, result.detail || "Prediction failed");
+      }
+    } catch (error) {
+      this.showResult("manual-result", false, error.message);
+    }
+  }
+
+  addBatchRow() {
+    if (this.batchRows.length >= 100) {
+      alert("Maximum 100 rows reached");
+      return;
+    }
+    this.batchRows.push({
+      pm25: "",
+      pm10: "",
+      aqi: "",
+      temp_c: "",
+      humidity_pct: "",
+      wind_speed_ms: "",
+      season: "",
+      station_type: "",
+    });
+    this.renderBatchTable();
+  }
+
+  clearBatch() {
+    this.batchRows = [];
+    this.renderBatchTable();
+  }
+
+  removeBatchRow(index) {
+    this.batchRows.splice(index, 1);
+    this.renderBatchTable();
+  }
+
+  updateBatchRow(index, field, value) {
+    this.batchRows[index][field] = value;
+  }
+
+  renderBatchTable() {
+    const tbody = document.getElementById("batch-tbody");
+    const count = document.getElementById("batch-count");
+
+    tbody.innerHTML = this.batchRows
+      .map(
+        (row, index) => `
+      <tr>
+        <td>${index + 1}</td>
+        <td><input type="number" step="0.1" value="${row.pm25}" data-field="pm25" data-index="${index}" class="batch-input"></td>
+        <td><input type="number" step="0.1" value="${row.pm10}" data-field="pm10" data-index="${index}" class="batch-input"></td>
+        <td><input type="number" step="1" value="${row.aqi}" data-field="aqi" data-index="${index}" class="batch-input"></td>
+        <td><input type="number" step="0.1" value="${row.temp_c}" data-field="temp_c" data-index="${index}" class="batch-input"></td>
+        <td><input type="number" step="0.1" value="${row.humidity_pct}" data-field="humidity_pct" data-index="${index}" class="batch-input"></td>
+        <td><input type="number" step="0.1" value="${row.wind_speed_ms}" data-field="wind_speed_ms" data-index="${index}" class="batch-input"></td>
+        <td>
+          <select data-field="season" data-index="${index}" class="batch-select">
+            <option value="${row.season}">${row.season || "--"}</option>
+            <option value="Winter">Winter</option>
+            <option value="Spring">Spring</option>
+            <option value="Summer">Summer</option>
+            <option value="Fall">Fall</option>
+          </select>
+        </td>
+        <td>
+          <select data-field="station_type" data-index="${index}" class="batch-select">
+            <option value="${row.station_type}">${row.station_type || "--"}</option>
+            <option value="Urban">Urban</option>
+            <option value="Suburban">Suburban</option>
+            <option value="Industrial">Industrial</option>
+            <option value="Rural">Rural</option>
+          </select>
+        </td>
+        <td>
+          <div class="batch-row-actions">
+            <button type="button" data-index="${index}" class="batch-delete">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `
+      )
+      .join("");
+
+    // Attach event listeners
+    document.querySelectorAll(".batch-input, .batch-select").forEach((el) => {
+      el.addEventListener("change", (e) => {
+        const index = parseInt(e.target.dataset.index);
+        const field = e.target.dataset.field;
+        this.updateBatchRow(index, field, e.target.value);
+      });
+    });
+
+    document.querySelectorAll(".batch-delete").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        this.removeBatchRow(parseInt(e.target.dataset.index));
+      });
+    });
+
+    count.textContent = `${this.batchRows.length} / 100 rows`;
+  }
+
+  async generateSampleData() {
+    const btn = document.getElementById("batch-generate-sample");
+    btn.disabled = true;
+    btn.textContent = "Generating...";
+
+    try {
+      const response = await fetch("/api/generate-sample-data?count=10");
+      const data = await response.json();
+
+      if (data.status === "success") {
+        // Populate batch rows with generated data
+        this.batchRows = data.rows;
+        this.renderBatchTable();
+        
+        // Show success message
+        this.showResult("batch-result", true, `✓ Generated ${data.count} sample rows. Ready to submit!`);
+      } else {
+        this.showResult("batch-result", false, data.detail || "Generation failed");
+      }
+    } catch (error) {
+      this.showResult("batch-result", false, error.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Generate Sample (10)";
+    }
+  }
+
+  async submitBatch() {
+    if (this.batchRows.length === 0) {
+      alert("Add at least one row");
+      return;
+    }
+
+    const payload = {
+      rows: this.batchRows.map((row) => ({
+        pm25: parseFloat(row.pm25) || 0,
+        pm10: parseFloat(row.pm10) || 0,
+        aqi: parseInt(row.aqi) || 0,
+        temp_c: parseFloat(row.temp_c) || 20,
+        humidity_pct: parseFloat(row.humidity_pct) || 50,
+        wind_speed_ms: parseFloat(row.wind_speed_ms) || 2,
+        season: row.season || "Spring",
+        station_type: row.station_type || "Urban",
+        pressure_hpa: 1013,
+        precipitation_mm: 0,
+        visibility_km: 10,
+        temp_inversion: 0,
+        elevation_m: 100,
+        near_highway: 0,
+        near_industry: 0,
+        station_id: "BATCH_AUTO",
+        co: 1,
+        no2: 30,
+        o3: 50,
+        so2: 5,
+        benzene: 1,
+        wind_dir_deg: 180,
+      })),
+    };
+
+    try {
+      const response = await fetch("/api/predict-batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.status === "success") {
+        this.showResult("batch-result", true, `✓ Processed ${result.rows_processed} rows successfully`);
+        this.clearBatch();
+        this.loadHistory();
+      } else {
+        this.showResult("batch-result", false, result.detail || "Batch processing failed");
+      }
+    } catch (error) {
+      this.showResult("batch-result", false, error.message);
+    }
+  }
+
+  showResult(elementId, isSuccess, message) {
+    const el = document.getElementById(elementId);
+    el.classList.remove("hidden", "success", "error");
+    el.classList.add(isSuccess ? "success" : "error");
+
+    if (typeof message === "object") {
+      el.innerHTML = `
+        <div class="result-row">
+          <span class="result-label">Total Alerts:</span>
+          <span class="result-value">${message.total_alerts || 0}</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Max Risk:</span>
+          <span class="result-value">${formatPercent(message.max_risk_prob)}</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Dominant Risk:</span>
+          <span class="result-value">${message.dominant_risk || "—"}</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Scored At:</span>
+          <span class="result-value">${formatDate(message.scored_at)}</span>
+        </div>
+      `;
+    } else {
+      el.textContent = message;
+    }
+  }
+
+  async loadHistory() {
+    try {
+      const response = await fetch("/api/predictions-history?limit=10");
+      const data = await response.json();
+
+      if (data.status === "success" && data.records.length > 0) {
+        this.renderHistory(data.records);
+      } else {
+        document.getElementById("history-tbody").innerHTML = "";
+        document.getElementById("history-message").style.display = "block";
+      }
+    } catch (error) {
+      console.error("Error loading history:", error);
+    }
+  }
+
+  renderHistory(records) {
+    const tbody = document.getElementById("history-tbody");
+    const message = document.getElementById("history-message");
+
+    message.style.display = "none";
+    tbody.innerHTML = records
+      .reverse()
+      .map(
+        (rec) => `
+      <tr>
+        <td>${rec.reading_id}</td>
+        <td>${rec.station_id || "—"}</td>
+        <td>${rec.total_alerts || 0}</td>
+        <td class="${rec.max_risk_prob >= 0.7 ? "high-risk" : ""}">${formatPercent(rec.max_risk_prob)}</td>
+        <td>${rec.dominant_risk || "—"}</td>
+        <td>${formatDate(rec.scored_at)}</td>
+      </tr>
+    `
+      )
+      .join("");
+  }
+}
+
+// Initialize prediction manager on page load
+document.addEventListener("DOMContentLoaded", () => {
+  new PredictionManager();
+});

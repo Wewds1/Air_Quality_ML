@@ -123,6 +123,131 @@
           <div class="threshold-strip" id="threshold-strip"></div>
         </div>
       </section>
+
+      <section class="editorial-panel light-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker dark">Manual Prediction</p>
+            <h2>Single sensor input</h2>
+          </div>
+          <p class="panel-note">Enter sensor readings to get an instant risk prediction.</p>
+        </div>
+        <form id="manual-form" class="prediction-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="manual-pm25">PM2.5 (µg/m³)</label>
+              <input type="number" id="manual-pm25" name="pm25" step="0.1" placeholder="e.g. 25.5" required>
+            </div>
+            <div class="form-group">
+              <label for="manual-pm10">PM10 (µg/m³)</label>
+              <input type="number" id="manual-pm10" name="pm10" step="0.1" placeholder="e.g. 45.0" required>
+            </div>
+            <div class="form-group">
+              <label for="manual-aqi">AQI</label>
+              <input type="number" id="manual-aqi" name="aqi" step="1" placeholder="e.g. 75" required>
+            </div>
+            <div class="form-group">
+              <label for="manual-temp">Temperature (°C)</label>
+              <input type="number" id="manual-temp" name="temp_c" step="0.1" placeholder="e.g. 22.5" required>
+            </div>
+            <div class="form-group">
+              <label for="manual-humidity">Humidity (%)</label>
+              <input type="number" id="manual-humidity" name="humidity_pct" step="0.1" placeholder="e.g. 65" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+              <label for="manual-wind">Wind Speed (m/s)</label>
+              <input type="number" id="manual-wind" name="wind_speed_ms" step="0.1" placeholder="e.g. 3.5" required>
+            </div>
+            <div class="form-group">
+              <label for="manual-season">Season</label>
+              <select id="manual-season" name="season" required>
+                <option value="">-- Select --</option>
+                <option value="Winter">Winter</option>
+                <option value="Spring">Spring</option>
+                <option value="Summer">Summer</option>
+                <option value="Fall">Fall</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="manual-station-type">Station Type</label>
+              <select id="manual-station-type" name="station_type" required>
+                <option value="">-- Select --</option>
+                <option value="Urban">Urban</option>
+                <option value="Suburban">Suburban</option>
+                <option value="Industrial">Industrial</option>
+                <option value="Rural">Rural</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="action-button">Predict</button>
+        </form>
+        <div id="manual-result" class="prediction-result hidden"></div>
+      </section>
+
+      <section class="split-panel">
+        <div class="split-column light-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker dark">Batch Predictions</p>
+              <h2>CRUD input (max 100)</h2>
+            </div>
+            <p class="panel-note">Add multiple sensor readings, then submit as a batch.</p>
+          </div>
+          <div class="batch-controls">
+            <button id="batch-add-row" class="action-button">+ Add Row</button>
+            <button id="batch-generate-sample" class="action-button secondary">Generate Sample (10)</button>
+            <button id="batch-clear" class="action-button secondary">Clear All</button>
+            <button id="batch-submit" class="action-button">Submit Batch</button>
+          </div>
+          <div id="batch-table-container" class="batch-table-container">
+            <table id="batch-table" class="batch-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>PM2.5</th>
+                  <th>PM10</th>
+                  <th>AQI</th>
+                  <th>Temp</th>
+                  <th>Humidity</th>
+                  <th>Wind</th>
+                  <th>Season</th>
+                  <th>Type</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="batch-tbody"></tbody>
+            </table>
+          </div>
+          <div id="batch-count" class="form-note">0 / 100 rows</div>
+          <div id="batch-result" class="prediction-result hidden"></div>
+        </div>
+
+        <div class="split-column dark-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Prediction History</p>
+              <h2>Recent submissions</h2>
+            </div>
+            <p class="panel-note">Latest predictions from manual and batch inputs.</p>
+          </div>
+          <div id="history-table-container" class="history-table-container">
+            <table id="history-table" class="history-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Station</th>
+                  <th>Alerts</th>
+                  <th>Risk %</th>
+                  <th>Dominant</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody id="history-tbody"></tbody>
+            </table>
+          </div>
+          <div id="history-message" class="placeholder">No predictions yet</div>
+        </div>
+      </section>
     </main>
   </div>
 
